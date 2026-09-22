@@ -1,0 +1,28 @@
+appId: com.perfumeshop.desktop
+productName: محل العطور
+directories:
+  output: release-v2
+files:
+  - dist/**/*
+  - package.json
+  - "!node_modules/**/*"
+  - "node_modules/sql.js/**/*"
+  - "!server/**/*"
+asar: true
+asarUnpack:
+  - "node_modules/sql.js/**/*"
+extraResources:
+  - from: "node_modules/sql.js/dist/sql-wasm.wasm"
+    to: "node_modules/sql.js/dist/sql-wasm.wasm"
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: محل العطور
+  uninstallDisplayName: محل العطور
