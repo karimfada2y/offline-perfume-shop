@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuthStore } from '../stores/authStore';
-import { saveReceiptPDF } from '../utils/pdf';
+import { parsePaperWidthMm, saveReceiptPDF } from '../utils/pdf';
 
 interface ReceiptItem {
   name: string;
@@ -145,12 +145,14 @@ export default function PrintPreview({ data, onClose }: Props) {
   };
 
   const handleDownloadPDF = async () => {
-    if (!previewRef.current || isDownloadingPDF) return;
+    if (!previewRef.current || !settings || isDownloadingPDF) return;
 
     setIsDownloadingPDF(true);
     try {
       const filename = `receipt_${data.invoiceNumber.replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
-      const result = await saveReceiptPDF(previewRef.current, filename);
+      const result = await saveReceiptPDF(previewRef.current, filename, {
+        paperWidth: parsePaperWidthMm(settings.receipt_width),
+      });
       
       if (result.success) {
         console.log('PDF saved to:', result.filePath);
