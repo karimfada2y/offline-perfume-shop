@@ -1,3 +1,17 @@
+export interface UpdateStatus {
+  state:
+    | 'idle'
+    | 'checking'
+    | 'available'
+    | 'not-available'
+    | 'downloading'
+    | 'downloaded'
+    | 'error';
+  version?: string;
+  percent?: number;
+  message?: string;
+}
+
 export interface ElectronAPI {
   // Auth
   login: (username: string, password: string) => Promise<{
@@ -188,6 +202,13 @@ export interface ElectronAPI {
   updateStoreSettings: (data: Record<string, unknown>) => Promise<unknown>;
   uploadStoreLogo: (buffer: ArrayBuffer, fileName: string) => Promise<{ success: boolean; path?: string; error?: string }>;
   removeStoreLogo: () => Promise<{ success: boolean }>;
+
+  // Updater
+  checkForUpdates: () => Promise<UpdateStatus>;
+  downloadUpdate: () => Promise<UpdateStatus>;
+  installUpdate: () => Promise<void>;
+  getUpdateStatus: () => Promise<UpdateStatus>;
+  onUpdateStatus: (callback: (status: UpdateStatus) => void) => () => void;
 }
 
 declare global {

@@ -5,6 +5,7 @@ import { registerIpcHandlers } from './ipc';
 import { registerLicensingHandlers } from './ipc/licensing';
 import { createBackupOnStart } from './backup';
 import { hasValidLocalActivation } from './licensing/licensing-client';
+import { registerUpdaterHandlers, scheduleStartupUpdateCheck } from './updater';
 
 let mainWindow: BrowserWindow | null = null;
 let licenseWindow: BrowserWindow | null = null;
@@ -87,6 +88,8 @@ function createMainWindow(hash?: string): void {
 app.whenReady().then(async () => {
   try {
     registerLicensingHandlers();
+    registerUpdaterHandlers();
+    scheduleStartupUpdateCheck();
 
     const activated = hasValidLocalActivation();
 

@@ -21,6 +21,7 @@ import AuditPage from '../../pages/AuditPage';
 import DiagnosticsPage from '../../pages/DiagnosticsPage';
 import CategoriesPage from '../../pages/CategoriesPage';
 import HelpPage from '../../pages/HelpPage';
+import UpdateBanner from '../UpdateBanner';
 
 export default function MainLayout() {
   const { sidebarOpen } = useAppStore();
@@ -63,6 +64,7 @@ export default function MainLayout() {
           {renderPage()}
         </main>
       </div>
+      <UpdateBanner />
     </div>
   );
 }

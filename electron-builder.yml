@@ -6,7 +6,26 @@ files:
   - dist/**/*
   - package.json
   - "!node_modules/**/*"
+  # sql.js: wasm database engine, loaded at runtime by the main process
   - "node_modules/sql.js/**/*"
+  # electron-updater + its full runtime closure (see src/main/updater.ts).
+  # The renderer bundles its own libs via Vite, so everything else stays out.
+  - "node_modules/electron-updater/**/*"
+  - "node_modules/builder-util-runtime/**/*"
+  - "node_modules/fs-extra/**/*"
+  - "node_modules/graceful-fs/**/*"
+  - "node_modules/universalify/**/*"
+  - "node_modules/jsonfile/**/*"
+  - "node_modules/js-yaml/**/*"
+  - "node_modules/argparse/**/*"
+  - "node_modules/sax/**/*"
+  - "node_modules/semver/**/*"
+  - "node_modules/lazy-val/**/*"
+  - "node_modules/lodash.escaperegexp/**/*"
+  - "node_modules/lodash.isequal/**/*"
+  - "node_modules/tiny-typed-emitter/**/*"
+  - "node_modules/debug/**/*"
+  - "node_modules/ms/**/*"
   - "!server/**/*"
 asar: true
 asarUnpack:
@@ -14,12 +33,19 @@ asarUnpack:
 extraResources:
   - from: "node_modules/sql.js/dist/sql-wasm.wasm"
     to: "node_modules/sql.js/dist/sql-wasm.wasm"
+publish:
+  - provider: github
+    owner: karimfada2y
+    repo: offline-perfume-shop
 win:
   target:
     - target: nsis
       arch:
         - x64
 nsis:
+  # Must match the asset name in the GitHub release, otherwise the update
+  # feed points at a file that does not exist and the download 404s.
+  artifactName: Setup.${version}.${ext}
   oneClick: false
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: true

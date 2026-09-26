@@ -181,4 +181,15 @@ contextBridge.exposeInMainWorld('electronAPI', {
   updateStoreSettings: (data: unknown) => ipcRenderer.invoke('storeSettings:update', data),
   uploadStoreLogo: (buffer: ArrayBuffer, fileName: string) => ipcRenderer.invoke('storeSettings:uploadLogo', buffer, fileName),
   removeStoreLogo: () => ipcRenderer.invoke('storeSettings:removeLogo'),
+
+  // Updater
+  checkForUpdates: () => ipcRenderer.invoke('updater:check'),
+  downloadUpdate: () => ipcRenderer.invoke('updater:download'),
+  installUpdate: () => ipcRenderer.invoke('updater:install'),
+  getUpdateStatus: () => ipcRenderer.invoke('updater:status'),
+  onUpdateStatus: (callback: (status: unknown) => void) => {
+    const listener = (_event: unknown, status: unknown) => callback(status);
+    ipcRenderer.on('updater:status', listener);
+    return () => ipcRenderer.removeListener('updater:status', listener);
+  },
 });
