@@ -1,7 +1,7 @@
 appId: com.perfumeshop.desktop
 productName: محل العطور
 directories:
-  output: release-v2
+  output: release-v5
 files:
   - dist/**/*
   - package.json
